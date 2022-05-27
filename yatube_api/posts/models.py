@@ -25,12 +25,12 @@ class Post(models.Model):
         upload_to='posts/', null=True, blank=True
     )  # поле для картинки
     group = models.ForeignKey(
-        Group, on_delete=models.CASCADE,
+        Group, on_delete=models.SET_NULL,
         related_name="posts", blank=True, null=True
     )
 
     def __str__(self):
-        return self.text
+        return self.text[:20]
 
 
 class Comment(models.Model):
