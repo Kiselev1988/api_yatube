@@ -19,7 +19,7 @@ class PostViewSet(viewsets.ModelViewSet):
         if not self.request.user.is_authenticated:
             raise PermissionDenied(DENIED_CREATE_MESSAGE)
         serializer.save(author=self.request.user)
-    
+
     def perform_update(self, serializer):
         if serializer.instance.author != self.request.user:
             raise PermissionDenied(DENIED_UPDATE_MESSAGE)
@@ -33,11 +33,11 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    
+
     def get_queryset(self):
         post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
         return post.comments
-    
+
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
@@ -52,7 +52,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             raise PermissionDenied(DENIED_DELETE_MESSAGE)
         super(CommentViewSet, self).perform_destroy(instance)
 
-    
+
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
